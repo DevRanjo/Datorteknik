@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-
+// funktion för att kolla om det sparas genom two's complement i minnet
 int if_twos_complement(){
 
     int x = -1;
@@ -31,8 +31,8 @@ int main(){
 // array med 8 bytes.
 unsigned char *b_array = malloc(8);
 // gör det till en integer pointer som ska ha ip addressen från uppgiften.
-int *ip_address = (int*) b_array;
-*ip_address = 0x04030201;
+int *address = (int*) b_array;
+*address = 0x04030201;
 
 // printar ut arrayen och kollar sedan om det är little/big endian.
 for(int i = 0; i<sizeof(int); i++){
