@@ -13,5 +13,6 @@ for(int i = 0; i<4; i++){
     printf("%02x ",b_array[i]);
 
 }
+free(b_array);
 
 }
