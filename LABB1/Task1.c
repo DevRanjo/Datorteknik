@@ -36,10 +36,10 @@ int *address = (int*) b_array;
 
 // printar ut arrayen och kollar sedan om det är little/big endian.
 for(int i = 0; i<sizeof(int); i++){
-    printf("%02x ",b_array[i]);
+    printf("%2x ",b_array[i]);
 }
 
-if(b_array[0] == 01){
+if(b_array[0] == 1){
     printf("\nIt's little endian (small to big)\n");
 }
 else{
