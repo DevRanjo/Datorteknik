@@ -7,8 +7,8 @@ typedef struct Data{
 }representation;
 
 
-
-void convertFloat(representation* rep, float flt){
+//representation* rep,
+void convertFloat( float flt){
     //check the sign 
     int sign = 0; 
     if(flt<0){
@@ -28,24 +28,36 @@ void convertFloat(representation* rep, float flt){
     }
     else{
         while(whole_num > 0){
-            whole_binary[index++] = (whole_num % 2);  //add each (remainder as) binary number to the array
+            float remainder = whole_num % 2;
+            char r; 
+
+            if(remainder == 0){ r = '0';}
+            else if(remainder == 1){ r = '1';}
+            else{ printf("error"); return; }
+
+            whole_binary[index++] =  r; //add each (remainder as) binary number to the array
             whole_num = (int) whole_num / 2;           //use next even number
         }
-        //after going to the end number -> reverse to get the right binary order
-        int last_index = index - 1;  //last index
 
-        for(int j=0; j < last_index/2; j++){            //go through half iterations to switch elements correctly in the array
+        //after going to the end number -> reverse to get the right binary order
+
+        for(int j=0; j < index/2; j++){            //go through half iterations to switch elements correctly in the array
             char temp = whole_binary[j];                
-            whole_binary[j] = whole_binary[last_index - j]; //switch later elements with prior order in array
-            whole_binary[last_index - j] = temp;            
+            whole_binary[j] = whole_binary[index -1 - j]; //switch later elements with prior order in array
+            whole_binary[index -1 - j] = temp;            
         }
+    }
+    whole_binary[index] = '\0';
+    printf("\n");
+    for(int i=0; i<16; i++){
+        printf("%c", whole_binary[i]);
     }
 
     //convert fraction number part to binary (reached the decimal point)
     char fraction_binary[16] = {0};
-    int index = 0; 
+    index = 0; 
 
-    while(frac != 0){   //run until there is no fract left
+    while(frac != 0 && index < 15){   //run until there is no fract left or max array size
         frac = frac * 2;        //fraction uses *2 to convert to binary (gets put in array in right order)
         
         int temp = frac;        //stores the integer (whole) part either 0 or 1
@@ -57,6 +69,7 @@ void convertFloat(representation* rep, float flt){
             fraction_binary[index++] = '0'; 
         }
     }
+    fraction_binary[index] = '\0';
 
     //combine both binary parts with snprintf
     char binary[32];
@@ -68,12 +81,17 @@ void convertFloat(representation* rep, float flt){
     //typ ta 1 minus på de fyra första byten ^^
 
     //combine everything sign + exponent + mantissa
-
+    printf("\n");
+    for(int i=0; i<16; i++){
+        printf("%c", binary[i]);
+    }
+    return;
 }
 
 
 int main(){
     representation* rep = malloc(8);
+    convertFloat(10.25);
 
 
     return 1; 
