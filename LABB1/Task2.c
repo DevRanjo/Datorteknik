@@ -48,28 +48,29 @@ void convertFloat(representation* rep, float flt){
         }
     }
 
-
-    // gör om decimaldelen till binary
+    //convert fraction number part to binary (reached the decimal point)
     char fraction_binary[16] = {0};
     int index_fraction = 0;
 
     while(frac > 0 && index_fraction < 16){
         frac *= 2;
 
-        int temp = (int) frac;// blir 0 eller 1
-        fraction_binary[index_fraction++] = temp;
-
-        frac -= temp;// ta bort heltalsdelen
+    while(frac != 0){   //run until there is no fract left
+        frac = frac * 2;        //fraction uses *2 to convert to binary (gets put in array in right order)
+        
+        int temp = frac;        //stores the integer (whole) part either 0 or 1
+        if(temp == 1){
+            fraction_binary[index++] = '1';
+            frac = frac - 1;    //remove whole number to keep working with fractions
+        }
+        else{
+            fraction_binary[index++] = '0'; 
+        }
     }
 
-
-    // exponenten
-    int exponent = index_whole - 1;
-
-    // bias (3 bit exponent -> bias = 3)
-    // alltså förflyttar vi skalan så vi ska slippa få negativa binära tal
-    // -3 är alltså 0 alltså 000
-    int biased_exp = exponent + 3;
+    //combine both binary parts with snprintf
+    char binary[32];
+    snprintf(binary, sizeof(binary), "%s.%s", whole_binary, fraction_binary);
 
 
     // mantissan
