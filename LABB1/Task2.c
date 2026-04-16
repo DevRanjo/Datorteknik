@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct Data{
     unsigned char data_buffer;      //[sign]=1[exponent]=3[mantissa]=4
@@ -40,13 +41,26 @@ void convertFloat(representation* rep, float flt){
         }
     }
 
-    //convert fraction number part to binary
-
+    //convert fraction number part to binary (reached the decimal point)
     char fraction_binary[16] = {0};
     int index = 0; 
 
+    while(frac != 0){   //run until there is no fract left
+        frac = frac * 2;        //fraction uses *2 to convert to binary (gets put in array in right order)
+        
+        int temp = frac;        //stores the integer (whole) part either 0 or 1
+        if(temp == 1){
+            fraction_binary[index++] = '1';
+            frac = frac - 1;    //remove whole number to keep working with fractions
+        }
+        else{
+            fraction_binary[index++] = '0'; 
+        }
+    }
 
     //combine both binary parts with snprintf
+    char binary[32];
+    snprintf(binary, sizeof(binary), "%s.%s", whole_binary, fraction_binary);
 
     //find exponent
 
