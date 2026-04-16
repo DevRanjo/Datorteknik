@@ -25,28 +25,36 @@ void convertFloat(representation* rep, float flt){
     // dela upp taleti heltal och decimaltal
     int whole_num = (int) flt;
     float frac = flt - whole_num;
-
+    float remainder;
+    char r; 
 
     // gör om heltalsdel till binary
     char whole_binary[16] = {0};
     int index = 0; 
-
-    if(whole_num == 0){
-        whole_binary[index++] = 0;
+        if(whole_num == 0){
+            whole_binary[index++] = '0';        
     }
     else{
         while(whole_num > 0){
-            whole_binary[index++] = (whole_num % 2);
-            whole_num = whole_num / 2;
+            remainder = whole_num % 2;
+            
+            if(remainder == 0){ r = '0';}       //adding the results as string
+            else if(remainder == 1){ r = '1';}
+            else{ printf("error"); return; }
+
+            whole_binary[index++] =  r; //add each (remainder as) binary number to the array
+            whole_num = (int) whole_num / 2;           //use next even number
         }
 
-        // vänd arrayen så det inte blir baklänges
-        for(int j = 0; j < index / 2; j++){
-            char temp = whole_binary[j];
-            whole_binary[j] = whole_binary[index - j - 1];
-            whole_binary[index_whole - j - 1] = temp;
+        //after going to the end number -> reverse to get the right binary order
+
+        for(int j=0; j < index/2; j++){            //go through half iterations to switch elements correctly in the array
+            char temp = whole_binary[j];                
+            whole_binary[j] = whole_binary[index -1 - j]; //switch later elements with prior order in array
+            whole_binary[index -1 - j] = temp;            
         }
     }
+    
     int index_whole = index;
     //convert fraction number part to binary (reached the decimal point)
     char fraction_binary[16] = {0};
