@@ -29,31 +29,31 @@ void convertFloat(representation* rep, float flt){
 
     // gör om heltalsdel till binary
     char whole_binary[16] = {0};
-    int index_whole = 0; 
+    int index = 0; 
 
     if(whole_num == 0){
-        whole_binary[index_whole++] = 0;
+        whole_binary[index++] = 0;
     }
     else{
         while(whole_num > 0){
-            whole_binary[index_whole++] = (whole_num % 2);
+            whole_binary[index++] = (whole_num % 2);
             whole_num = whole_num / 2;
         }
 
         // vänd arrayen så det inte blir baklänges
-        for(int j = 0; j < index_whole / 2; j++){
+        for(int j = 0; j < index / 2; j++){
             char temp = whole_binary[j];
-            whole_binary[j] = whole_binary[index_whole - j - 1];
+            whole_binary[j] = whole_binary[index - j - 1];
             whole_binary[index_whole - j - 1] = temp;
         }
     }
-
+    int index_whole = index;
     //convert fraction number part to binary (reached the decimal point)
     char fraction_binary[16] = {0};
-    int index_fraction = 0;
+    index = 0;
 
-    while(frac > 0 && index_fraction < 16){
-        frac *= 2;
+    while(frac > 0 && index < 16){
+        frac = frac * 2;
 
     while(frac != 0){   //run until there is no fract left
         frac = frac * 2;        //fraction uses *2 to convert to binary (gets put in array in right order)
