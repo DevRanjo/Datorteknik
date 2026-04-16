@@ -96,7 +96,7 @@ void convertFloat(representation* rep, float flt){
     rep->data_buffer = 0;
 
     // lägg in sign (bit 7) (1 bit)
-    rep->data_buffer |= (sign << 7); 
+    rep->data_buffer |= (sign << 7); // (<<) flytta sign 7 bitar åt vänster
     // |= betyder att man lägger in sign i data_buffer utan att ta bort d et som redan finns i data_buffer
 
     // lägg in exponent (bit 6–4) (3 bits)
