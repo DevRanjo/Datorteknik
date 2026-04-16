@@ -108,7 +108,7 @@ void convertFloat(representation* rep, float flt){
     }
 }
 
-void printBits(representation rep){ // printar från bit 7 och nedåt för att få dom i rätt ordning
+void finalPrints(representation rep){ // printar från bit 7 och nedåt för att få dom i rätt ordning
     for(int i = 7; i >= 0; i--){
         printf("%d", (rep.data_buffer >> i) & 1);
     }
@@ -122,22 +122,22 @@ int main(){
     // Test med ojämnt tal
     convertFloat(&rep, 5.73);
     printf("5.73 -> ");
-    printBits(rep);
+    finalPrints(rep);
 
     // Test med mindre jämnt tal
     convertFloat(&rep, 3.5);
     printf("3.5 -> ");
-    printBits(rep);
+    finalPrints(rep);
 
     // Test med större tal
     convertFloat(&rep, 10.25);
     printf("10.25 -> ");
-    printBits(rep);
+    finalPrints(rep);
 
     // Edge case, noll
     convertFloat(&rep, 0.0);
     printf("0.0 -> ");
-    printBits(rep);
+    finalPrints(rep);
 
     return 0;
 }
