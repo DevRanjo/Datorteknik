@@ -43,14 +43,36 @@ void convertFloat(representation* rep, float flt){
     //convert fraction number part to binary
 
     char fraction_binary[16] = {0};
-    int index = 0; 
+    int index_fraction = 0; 
 
 
     //combine both binary parts with snprintf
 
-    //find exponent
+    // exponent = amount of steps we move the decimal
+    // index = amount of bites in the integer part (ex: 101 -> index = 3)
+    // så exponent = index - 1 (för att vi vill ha formen 1.xxxxx)
+    int exponent = index - 1;
 
-    //extract mantissa
+    //extract mantissa (4 bits)
+    char mantissa[4];
+    int m = 0;
+
+    // start at i = 1
+    // since we skip the first one (its always implicit in floating point)
+    // ex: 101 -> skip first 1 -> take "01"
+    for(int i = 1; i < index && m < 4; i++){
+        mantissa[m++] = whole_binary[i];
+    }
+
+    // if the 4 bits of the mantissa hasn't been found yet, continue with fraction
+    // wx: 101.11 -> we have "01" from integer -> needs 2 moore -> take "11"
+    for(int i = 0; m < 4; i++){
+    mantissa[m++] = fraction_binary[i];
+    }
+    // if its still not 4 bites, put in zeros
+    while(m < 4){
+    mantissa[m++] = 0;
+    }
     //typ ta 1 minus på de fyra första byten ^^
 
     //combine everything sign + exponent + mantissa
