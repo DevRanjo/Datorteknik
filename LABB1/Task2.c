@@ -62,6 +62,7 @@ void convertFloat(representation* rep, float flt){
 
     while(frac > 0 && index < 16){
         frac = frac * 2;
+    }
 
     while(frac != 0){   //run until there is no fract left
         frac = frac * 2;        //fraction uses *2 to convert to binary (gets put in array in right order)
@@ -80,6 +81,15 @@ void convertFloat(representation* rep, float flt){
     char binary[32];
     snprintf(binary, sizeof(binary), "%s.%s", whole_binary, fraction_binary);
 
+
+    // exponenten
+    int exponent = index_whole - 1;
+
+
+    // bias (3 bit exponent -> bias = 3)
+    // alltså förflyttar vi skalan så vi ska slippa få negativa binära tal
+    // -3 är alltså 0 alltså 000
+    int biased_exp = exponent + 3;
 
     // mantissan
     char mantissa[4];
