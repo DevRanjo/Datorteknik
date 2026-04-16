@@ -3,7 +3,6 @@
 
 typedef struct Data{
     unsigned char data_buffer;      //[sign]=1[exponent]=3[mantissa]=4
-    //void convertFloat() make it like a member function 
 }representation;
 
 
