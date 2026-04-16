@@ -54,17 +54,13 @@ void convertFloat(representation* rep, float flt){
             whole_binary[index -1 - j] = temp;            
         }
     }
-    
+
     int index_whole = index;
     //convert fraction number part to binary (reached the decimal point)
     char fraction_binary[16] = {0};
     index = 0;
 
-    while(frac > 0 && index < 16){
-        frac = frac * 2;
-    }
-
-    while(frac != 0){   //run until there is no fract left
+    while(frac > 0 && index < 16){   //run until there is no fract left
         frac = frac * 2;        //fraction uses *2 to convert to binary (gets put in array in right order)
         
         int temp = frac;        //stores the integer (whole) part either 0 or 1
