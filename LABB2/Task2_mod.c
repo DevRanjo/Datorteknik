@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 char int_out(int input){
-    char buff[12] = {0};
+    char buff[12] = "";
 
     int load = snprintf(buff, sizeof(buff), "%x", input);
     if(load >= buff){
@@ -11,12 +11,12 @@ char int_out(int input){
     return buff; 
 }
 
-//______
+//______im the main func>
 
 char assembly_call();
 
 int main(){
-    int result = assembly_call();
+    char result = assembly_call();
     printf("\nResult: \n", result);
     return 1; 
 }
