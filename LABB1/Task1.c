@@ -30,7 +30,7 @@ int main(){
 
 // array med 8 bytes.
 unsigned char *b_array = malloc(8);
-// gör det till en integer pointer som ska ha ip addressen från uppgiften.
+// gör det till en integer pointer som ska ha tal från uppgiften.
 int *address = (int*) b_array;
 *address = 0x04030201;
 
