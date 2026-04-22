@@ -1,22 +1,20 @@
-#include <stdio.h>
+.global main
+.extern printf 
 
-char int_out(int input){
-    char buff[12] = "";
+.data
+value: .word 10 @ skapar int variabel
+string: .asciz "%x"     @display it with hex
 
-    int load = snprintf(buff, sizeof(buff), "%x", input);
-    if(load >= buff){
-        printf("Overload of buffer");
-        return buff; 
-    }
-    return buff; 
-}
+.text
+main:
+    push {lr}            @ save return address
 
-//______im the main func>
+    ldr r0, =string        @ hämta addressen som string ligger i minnet
+    ldr r1, =value        @ hämta addressen som value ligger i minnet
+    ldr r1, [r1]        @ hämta värdet från addressen
 
-char assembly_call();
 
-int main(){
-    char result = assembly_call();
-    printf("\nResult: \n", result);
-    return 1; 
-}
+    bl printf         @ anropa printf("%x", 10)
+
+    pop {lr}
+    bx lr
