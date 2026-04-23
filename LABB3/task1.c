@@ -5,8 +5,13 @@
 memory in order to store the matrix N ∗ M. The size of each element is given by a
 parameter to the function (see example above).*/
 
-char* two_d_alloc(int N, int M, int byte_size){
+char** two_d_alloc(int N, int M, int byte_size){
+    char** ptr = malloc(N * byte_size);
 
+    for(int i=0; i<N; i++){
+        ptr[i] = malloc(M * byte_size);
+    }
+    return ptr;
 }
 
 /*two_d_dealloc: This function deallocate the memory once the programmer doesn’t need
