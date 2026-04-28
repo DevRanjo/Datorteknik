@@ -20,8 +20,9 @@ char* two_d_alloc(int N, int M, int byte_size){
 /*two_d_dealloc: This function deallocate the memory once the programmer doesn’t need
 anymore the array.*/
 
-void two_d_dealloc(){}
-
+void two_d_dealloc(char* ptr){
+    free(ptr);
+}
 /*two d store: This function store a value into the corresponding row and column of the
 array.*/
 
