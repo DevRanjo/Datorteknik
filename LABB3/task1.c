@@ -63,8 +63,42 @@ int column_two_d_fetch(char* ptr, int row_indx, int col_indx, int byte_size, int
     return stored_value; 
 }
 
+/*Implement a memory dump program which can read through a character array and prints
+out each word in hexadecimal notation. Separate words in groups of four words per line,
+where each word is represented by 8 hexadecimal numbers. 
+
+Print the memory address of the
+first byte on every line. Test your memory dump on the character array you implemented
+in Task 1. Add four more columns to your output and interpret every byte as an ASCII
+character. If the byte does not contain a valid character, print a dot instead.*/
+
+void mem_dump(char* arr, int byte_size){
+    
+
+    for(int i=0; i<16; i++){
+    printf("\nmemory address line %d: %p\n", i+1, arr);
+        for(int j=0; j<4; j++){
+            printf("%x", *arr);
+        } 
+    arr = arr + 4*byte_size; 
+    printf("\t");
+    }
+
+    
+
+    //snprintf(, sizeof(char), "%s.%s", total_string, added);
+
+
+    /*for(int j=0; j<; j++){
+        arr = arr + byte_size *
+        printf("%x", *arr);
+}*/
+    //arr = arr + byte_size * (col_indx * total_rows + col_indx);
+}
+
+
 int main(){
-    char* d, *p; 
+    char* d, *p, *t; 
     int y, z;
     d=two_d_alloc(2,3,sizeof(int));
 
@@ -109,7 +143,12 @@ int main(){
     z = column_two_d_fetch(p,0,1,sizeof(int), 3) + column_two_d_fetch(p,1,1,sizeof(int), 3);
     printf("z = %d", z);
 
+    //TASK 2 MEMORY DUMP
 
+    printf("\nMemory dump:\n");
+    mem_dump(d, sizeof(int));
+
+    
     two_d_dealloc(p);
     two_d_dealloc(d);
     return 1; 
