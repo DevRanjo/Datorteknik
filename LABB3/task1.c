@@ -63,8 +63,42 @@ int column_two_d_fetch(char* ptr, int row_indx, int col_indx, int byte_size, int
     return stored_value; 
 }
 
+/*Implement a memory dump program which can read through a character array and prints
+out each word in hexadecimal notation. Separate words in groups of four words per line,
+where each word is represented by 8 hexadecimal numbers. 
+
+Print the memory address of the first byte on every line. 
+
+Test your memory dump on the character array you implemented
+in Task 1. Add four more columns to your output and interpret every byte as an ASCII
+character. If the byte does not contain a valid character, print a dot instead.*/
+
+void mem_dump(char* arr, int total_bytes, int word_size){
+    
+    for(int i=0; i<total_bytes; i += 4 * word_size){ //4 words for each line
+    printf("\nmemory address line %d: %p\n", i+1, arr + i); //first byte
+        char* line_ptr = arr + i;           //gets curr byte in memory
+
+        for(int j=0; j<4; j++){             //print each word
+            int word = 0; 
+
+            for(int z=0; z < word_size; z++){ //create each word
+                word = (word << 8) | *line_ptr; // << left shift everything by 8 bits, makes space for new byte
+                                                // | *line_ptr inserts the new byte at the address line_ptr
+                line_ptr++;                     //move to next byte
+            }
+            printf("%08x ", word);
+        }
+    }
+
+    printf("\n");
+    
+
+}
+
+
 int main(){
-    char* d, *p; 
+    char* d, *p, *t; 
     int y, z;
     d=two_d_alloc(2,3,sizeof(int));
 
@@ -109,7 +143,12 @@ int main(){
     z = column_two_d_fetch(p,0,1,sizeof(int), 3) + column_two_d_fetch(p,1,1,sizeof(int), 3);
     printf("z = %d", z);
 
+    //TASK 2 MEMORY DUMP
 
+    printf("\nMemory dump:\n");
+    mem_dump(d, sizeof(int)*2*3, sizeof(int));
+
+    
     two_d_dealloc(p);
     two_d_dealloc(d);
     return 1; 
