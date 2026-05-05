@@ -57,7 +57,7 @@ void column_two_d_store(char* ptr, int row_indx, int col_indx, int byte_size, in
 }
 
 int column_two_d_fetch(char* ptr, int row_indx, int col_indx, int byte_size, int total_rows){
-    ptr = ptr + byte_size * (col_indx * total_rows + col_indx);
+    ptr = ptr + byte_size * (col_indx * total_rows + row_indx);
 
     int stored_value = *(int*)ptr; 
     return stored_value; 
@@ -76,19 +76,39 @@ character. If the byte does not contain a valid character, print a dot instead.*
 void mem_dump(char* arr, int total_bytes, int word_size){
     
     for(int i=0; i<total_bytes; i += 4 * word_size){ //4 words for each line
-    printf("\nmemory address line %d: %p\n", i+1, arr + i); //first byte
+    printf("\nmemory address on byte nr %d: %p\n", i+1, arr + i); //first byte
         char* line_ptr = arr + i;           //gets curr byte in memory
 
-        for(int j=0; j<4; j++){             //print each word
+        for(int j=0; j<4 && (line_ptr-arr)<total_bytes; j++){   //print each word (4 bytes each normal case)
             int word = 0; 
 
-            for(int z=0; z < word_size; z++){ //create each word
-                word = (word << 8) | *line_ptr; // << left shift everything by 8 bits, makes space for new byte
+            for(int z=0; z < word_size && (line_ptr-arr)<total_bytes; z++){ //create each word
+                word = (word << 8) | (unsigned char)*line_ptr; // << left shift everything by 8 bits, makes space for new byte
                                                 // | *line_ptr inserts the new byte at the address line_ptr
                 line_ptr++;                     //move to next byte
             }
-            printf("%08x ", word);
+            printf("%08x ", word);   
         }
+        printf("\n");
+
+        line_ptr = arr + i; //reset pointer position
+
+        for (int j = 0; j < 4 && (line_ptr - arr) < total_bytes; j++) { //for each word 
+            for (int y = 0; y < word_size && (line_ptr - arr) < total_bytes; y++) {
+                unsigned char c = *line_ptr;
+
+                if(c >= 32 && c <= 126){
+                    printf("%c", c);
+                }
+                else{
+                    printf(".");
+                }
+                line_ptr++;
+            }
+            printf(" ");
+        }
+
+        printf("\n");
     }
 
     printf("\n");
@@ -112,7 +132,7 @@ int main(){
    
     for(int i=0; i<2; i++){
         for(int j=0; j < 3; j++){
-            printf("%d\t", d[sizeof(int) * (i * 3 + j)]);
+            printf("%d\t", (int)d[sizeof(int) * (i * 3 + j)]);
         }
         printf("\n");
     }
@@ -140,7 +160,7 @@ int main(){
         printf("\n");
     }
    
-    z = column_two_d_fetch(p,0,1,sizeof(int), 3) + column_two_d_fetch(p,1,1,sizeof(int), 3);
+    z = column_two_d_fetch(p,0,1,sizeof(int), 2) + column_two_d_fetch(p,1,1,sizeof(int), 2);
     printf("z = %d", z);
 
     //TASK 2 MEMORY DUMP
