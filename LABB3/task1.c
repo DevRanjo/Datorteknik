@@ -67,33 +67,33 @@ int column_two_d_fetch(char* ptr, int row_indx, int col_indx, int byte_size, int
 out each word in hexadecimal notation. Separate words in groups of four words per line,
 where each word is represented by 8 hexadecimal numbers. 
 
-Print the memory address of the
-first byte on every line. Test your memory dump on the character array you implemented
+Print the memory address of the first byte on every line. 
+
+Test your memory dump on the character array you implemented
 in Task 1. Add four more columns to your output and interpret every byte as an ASCII
 character. If the byte does not contain a valid character, print a dot instead.*/
 
-void mem_dump(char* arr, int byte_size){
+void mem_dump(char* arr, int total_bytes, int word_size){
     
+    for(int i=0; i<total_bytes; i += 4 * word_size){ //4 words for each line
+    printf("\nmemory address line %d: %p\n", i+1, arr + i); //first byte
+        char* line_ptr = arr + i;           //gets curr byte in memory
 
-    for(int i=0; i<16; i++){
-    printf("\nmemory address line %d: %p\n", i+1, arr);
-        for(int j=0; j<4; j++){
-            printf("%x", *arr);
-        } 
-    arr = arr + 4*byte_size; 
-    printf("\t");
+        for(int j=0; j<4; j++){             //print each word
+            int word = 0; 
+
+            for(int z=0; z < word_size; z++){ //create each word
+                word = (word << 8) | *line_ptr; // << left shift everything by 8 bits, makes space for new byte
+                                                // | *line_ptr inserts the new byte at the address line_ptr
+                line_ptr++;                     //move to next byte
+            }
+            printf("%08x ", word);
+        }
     }
 
+    printf("\n");
     
 
-    //snprintf(, sizeof(char), "%s.%s", total_string, added);
-
-
-    /*for(int j=0; j<; j++){
-        arr = arr + byte_size *
-        printf("%x", *arr);
-}*/
-    //arr = arr + byte_size * (col_indx * total_rows + col_indx);
 }
 
 
@@ -146,7 +146,7 @@ int main(){
     //TASK 2 MEMORY DUMP
 
     printf("\nMemory dump:\n");
-    mem_dump(d, sizeof(int));
+    mem_dump(d, sizeof(int)*2*3, sizeof(int));
 
     
     two_d_dealloc(p);
