@@ -165,8 +165,28 @@ int main(){
 
     //TASK 2 MEMORY DUMP
 
+    t=two_d_alloc(3,5,sizeof(int));
+
+    two_d_store(t,0,0,sizeof(int),82, 5);
+    two_d_store(t,0,1,sizeof(int),65, 5);
+    two_d_store(t,0,2,sizeof(int),78, 5);
+    two_d_store(t,0,3,sizeof(int),73, 5);
+    two_d_store(t,0,4,sizeof(int),65, 5);
+
+    two_d_store(t,1,0,sizeof(int),77, 5);
+    two_d_store(t,1,1,sizeof(int),65, 5);
+    two_d_store(t,1,2,sizeof(int),76, 5);
+    two_d_store(t,1,3,sizeof(int),73, 5);
+    two_d_store(t,1,4,sizeof(int),78, 5);
+
+    two_d_store(t,2,0,sizeof(int),4, 5);
+    two_d_store(t,2,1,sizeof(int),5, 5);
+    two_d_store(t,2,2,sizeof(int),6, 5);
+    two_d_store(t,2,3,sizeof(int),4, 5);
+    two_d_store(t,2,4,sizeof(int),5, 5);
+    
     printf("\nMemory dump:\n");
-    mem_dump(d, sizeof(int)*2*3, sizeof(int));
+    mem_dump(t, sizeof(int)*3*5, sizeof(int));
 
     
     two_d_dealloc(p);
