@@ -191,5 +191,6 @@ int main(){
     
     two_d_dealloc(p);
     two_d_dealloc(d);
+    two_d_dealloc(t);
     return 1; 
 }
