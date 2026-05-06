@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "func_task1.h"
+#include <string.h>
 
 typedef struct Node{
     char c;
@@ -52,6 +53,15 @@ void free_list(Node* L){
         free(tmp);
     }
     return;
+}
+
+//new row major store function to be able not focus only on integer but for entire Node memory blocks
+void new_two_d_store(char* ptr, int row_indx, int col_indx, int byte_size, Node* values_at_node, int total_columns){
+    ptr = ptr + byte_size * (row_indx * total_columns + col_indx);
+    
+    //copy full emory block of node into the array for the task
+    memcpy(ptr, values_at_node, byte_size);
+    return; 
 }
 
 int main(){
@@ -109,17 +119,34 @@ int main(){
 
     //Task 4.2 Storing the list
     tmp = L1; 
-    char* arr = two_d_alloc(0, 10, sizeof(Node));
+    char* arr = two_d_alloc(1, 10, sizeof(Node));
 
-    for(int i=0; i<10; i++){
-        two_d_store(arr, 0, i, sizeof(Node), tmp->val, 10);
+    for(int i=0; i<10 && tmp != NULL; i++){
+        new_two_d_store(arr, 0, i, sizeof(Node), tmp, 10);
         tmp = tmp->next;
     }
     
-    mem_dump(arr, sizeof(Node)*10, 12);
+    
+    printf("\nElements stored in arr from list:\n");
+    for(int i=0; i<10; i++){    //point to i node in arr
+
+        printf("Element %d: \t value: %d\n", i+1, ((Node*)(arr + i * sizeof(Node)))->val); //value at i node in array
+    }
+    printf("\n");
+
+    mem_dump(arr, sizeof(Node)*10, sizeof(Node));
+
+    printf("Fifth element:\n");
+    printf("Location (index) of fifth node in array: %d\n", 4);
+    Node* fifth_address = (Node*)(arr + 4 + sizeof(Node));
+    printf("Address in memory of fifth node: %p\n", &fifth_address);
+    printf("Address for fifth int: %p\n", &fifth_address->val);
+    printf("Address for fifth char: %p\n", &fifth_address->c);
+
     
     free(arr);
     free(tmp);
+    free(fifth_address);
     free_list(L1);
     return 1; 
 }
