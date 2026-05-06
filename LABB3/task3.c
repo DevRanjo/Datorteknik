@@ -138,15 +138,15 @@ int main(){
 
     printf("Fifth element:\n");
     printf("Location (index) of fifth node in array: %d\n", 4);
-    Node* fifth_address = (Node*)(arr + 4 + sizeof(Node));
+    Node* fifth_address = (Node*)(arr + 4 * sizeof(Node));
     printf("Address in memory of fifth node: %p\n", &fifth_address);
-    printf("Address for fifth int: %p\n", &fifth_address->val);
     printf("Address for fifth char: %p\n", &fifth_address->c);
+    printf("Address for fifth int: %p\n", &fifth_address->val);
+    printf("Address for fifth next ptr: %p\n", &fifth_address->next);
+
 
     
     free(arr);
-    free(tmp);
-    free(fifth_address);
     free_list(L1);
     return 1; 
 }
