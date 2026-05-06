@@ -1,14 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "func_task1.h"
 
 typedef struct Node{
-    int val;
     char c;
     struct Node* next; 
+    int val;
 }Node;
 
 Node* create_node(int value, char chr){
     Node* new_node = malloc(sizeof(Node));
+    if(new_node == NULL){
+        printf("Allocation failed\n");
+        return NULL; 
+    }
     new_node->val = value;
     new_node->c = chr; 
     new_node->next = NULL;
@@ -80,8 +85,8 @@ int main(){
     }
     only_fields_size = list_int_size + list_char_size + list_pointer_size;
     printf("\nChecking one struct Node:\n");
-    printf("Only size of struct Node: %d\n", list_struct_size);
-    printf("Sum of all fields in struct node: %d\n", only_fields_size);
+    printf("Only size of struct Node: %d bytes\n", list_struct_size);
+    printf("Sum of all fields in struct node: %d bytes\n", only_fields_size);
 
     //skip first to continue with rest of list 
     tmp = tmp->next;
@@ -99,9 +104,21 @@ int main(){
     only_fields_size = list_int_size + list_char_size + list_pointer_size;
 
     printf("\nChecking 10 element list with size:\n");
-    printf("Struct size list: %d\n", list_struct_size);
-    printf("Only all fields in list size: %d", only_fields_size);
+    printf("Struct size list: %d bytes\n", list_struct_size);
+    printf("Only all fields in list size: %d bytes\n", only_fields_size);
 
+    //Task 4.2 Storing the list
+    tmp = L1; 
+    char* arr = two_d_alloc(0, 10, sizeof(Node));
+
+    for(int i=0; i<10; i++){
+        two_d_store(arr, 0, i, sizeof(Node), tmp->val, 10);
+        tmp = tmp->next;
+    }
+    
+    mem_dump(arr, sizeof(Node)*10, 12);
+    
+    free(arr);
     free(tmp);
     free_list(L1);
     return 1; 
