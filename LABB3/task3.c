@@ -144,7 +144,6 @@ int main(){
     printf("Address for fifth int: %p\n", &fifth_address->val);
     printf("Address for fifth next ptr: %p\n", &fifth_address->next);
 
-
     
     free(arr);
     free_list(L1);
