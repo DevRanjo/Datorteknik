@@ -17,16 +17,17 @@ the file, byte per byte, until we reach EOF*/
 #define byte_size 16
 
 int buf_in(int fd, char arr[]){  //read_bytes amount of bytes to read
-    static int bytes_in_buff = 0;   
+    static int byte_amount = 0;   //static to not reset each function call
     static int position = 0;
     
     //read each char until we reach a current empty buffer
-    if(position >= bytes_in_buff){  
-        bytes_in_buff = read(fd, arr, byte_size);
+    if(position >= byte_amount){  
+        byte_amount = read(fd, arr, byte_size); //read 16 bytes
+        //int byte_amount = byte amount refilled in buffer
 
         position = 0; //reset position to not increase forever
 
-        if(bytes_in_buff == 0){ //if bytes not read -> end of file reached
+        if(byte_amount == 0){ //if bytes not read -> end of file reached
             printf("EOF\n");
             return EOF;
         }
