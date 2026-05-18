@@ -13,17 +13,29 @@ Test your function.
 In short, once we have opened the file in binary mode, we can just have a loop to read all
 the file, byte per byte, until we reach EOF*/
 
-void buf_in(int fd, char* arr, int read_bytes){  //read_bytes amount of bytes to read
-    int r;
+int buf_in(int fd){  //read_bytes amount of bytes to read
 
-    //read byte 
-    r = read(fd, arr, read_bytes);
-    
-    arr[r] = '\0';
-	printf("Those bytes are as follows: %s\n", arr);
-    return;
+    //static = värdena sparas efter varje funktionsanrop
+
+    static char buffer[16]; // buffer array som 16 bytes sparas i åt gången
+    static int pos = 0; // vilken position i buffern vi är just nu
+    static int bytes_in_buffer = 0; // hur många bytes som lästes in från filen
+
+    if (pos >= bytes_in_buffer){ // är buffern slut? läs isåfall in 16 nya bytes
+        bytes_in_buffer = read(fd, buffer, 16); // läs 16 bytes in i buffern
+
+        if(bytes_in_buffer <= 0){
+            return EOF;
+        }
+
+        pos = 0;
+    }
+
+    return buffer[pos++]; // returnerar nästa byte
+
+
 }
-void check_until_eof(int fd, char* arr){
+/* void check_until_eof(int fd, char* arr){
     char* head = arr;
    
     while(arr!= head+16){
@@ -33,10 +45,33 @@ void check_until_eof(int fd, char* arr){
     
     printf("EOF\n");
     return;
-}
+} */
 
 int main(){
-    char* arr = malloc(16);
+
+    int fd = open("exampletext.txt", O_RDONLY);
+
+    if(fd < 0){
+        perror("couldn't open file");
+        return 1;
+    }
+
+    int c;
+
+
+
+    /* loopa igenom filen och hämta ett tecken i taget från bufferten
+    skriver sen ut det tills EOF nås */
+    while((c=buf_in(fd)) != EOF){
+        printf("%c",c);
+    }
+
+    close(fd);
+
+    return 0;
+
+
+/*     char* arr = malloc(16);
     
     //exit system call
     if(arr==NULL){
@@ -58,5 +93,5 @@ int main(){
 
 
     free(arr);
-    return 0; 
+    return 0;  */
 }
