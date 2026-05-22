@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//The task:
+//The task 1:
 /*uses a character array of size b = 16 bytes to implement a read buffer.
 • If the buffer is empty, the function buf_in should read in b byte from the file and put
 them in the buffer.
@@ -35,7 +35,7 @@ int buf_in(int fd, char arr[]){  //read_bytes amount of bytes to read
     return arr[position++]; //return current read char
 }
 
-void check_until_eof(int fd, char arr[]){
+void check_until_eof(int fd, char arr[], int fd2){
     char c;
    
     while((c = buf_in(fd, arr)) != EOF){
@@ -46,6 +46,51 @@ void check_until_eof(int fd, char arr[]){
     printf("\n");
     return;
 }
+
+//Task 2:
+/*In this taks we will, in a similar way as the previous task, write a function doing buffered
+writes to a file. Do not use any C functions from the standard library having a buffer in
+your code! You need to write two functions:
+    • buf_out In a similar way as buf_in, this function has a buffer of size b = 16. This
+    function take a byte as parameter and put in the buffer. 
+    If the buffer is full, the
+    contents of the buffer are writing to the file before putting the byte given as parameter
+    into the buffer.
+
+    • buf_flush This function, with no parameter, is just writing the content of the buffer
+    to the file.*/
+
+static int position = 0;
+static char* arr;
+static int fd2;
+
+void buf_out(int fd2, char* arr, char input){
+    arr[position++] = input; 
+
+    if(position >= byte_size){ //if buffer is full aka 16 bytes or more then write
+        write(fd2, arr, byte_size);    
+        position = 0; //reset position in arr
+    }
+    return;
+}
+
+void buf_flush(){ //writes immediate current buffer result
+    if(position > 0){
+        write(fd2, arr, byte_size);
+        position = 0;
+    }
+    return;
+}
+
+void write_of_file(int fd, int fd2, char arr[]){
+    char c;
+    while()
+
+    printf("\n");
+    return;
+}
+
+
 
 int main(){
     
@@ -58,9 +103,25 @@ int main(){
         perror("File open failure\n");
         exit(1);
     }
-
     //calls buf_in the while loop in function below
-    check_until_eof(fd, arr);
+    check_until_eof(fd, arr, fd2);
+
+    //TASK 2
+    int fd2 = open("writeInFile.txt", O_WRONLY | O_CREAT); //file descriptor - read only 
+    if(fd2 == -1){ //fd returns as -1 upon failure 
+        perror("File 2 creation or open failure\n");
+        exit(1);
+    }
+
+    int fd3 = open("writefromfile.txt", O_RDONLY); 
+    if(fd3 == -1){ //fd returns as -1 upon failure 
+        perror("File open failure\n");
+        exit(1);
+    }
+
+    
+
+
 
     //close system call 
     if(close(fd) == -1){
