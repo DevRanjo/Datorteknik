@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//The task 1:
+//_______________________________________The task 1:_______________________________________________________
 /*uses a character array of size b = 16 bytes to implement a read buffer.
 • If the buffer is empty, the function buf_in should read in b byte from the file and put
 them in the buffer.
@@ -35,7 +35,7 @@ int buf_in(int fd, char arr[]){  //read_bytes amount of bytes to read
     return arr[position++]; //return current read char
 }
 
-void check_until_eof(int fd, char arr[], int fd2){
+void check_until_eof(int fd, char arr[]){
     char c;
    
     while((c = buf_in(fd, arr)) != EOF){
@@ -47,7 +47,7 @@ void check_until_eof(int fd, char arr[], int fd2){
     return;
 }
 
-//Task 2:
+//________________________________________Task 2:______________________________________________
 /*In this taks we will, in a similar way as the previous task, write a function doing buffered
 writes to a file. Do not use any C functions from the standard library having a buffer in
 your code! You need to write two functions:
@@ -60,11 +60,10 @@ your code! You need to write two functions:
     • buf_flush This function, with no parameter, is just writing the content of the buffer
     to the file.*/
 
-static int position = 0;
-static char* arr;
-static int fd2;
 
-void buf_out(int fd2, char* arr, char input){
+static int position = 0;
+void buf_out(int fd2, char arr[], char input){ 
+
     arr[position++] = input; 
 
     if(position >= byte_size){ //if buffer is full aka 16 bytes or more then write
@@ -74,19 +73,48 @@ void buf_out(int fd2, char* arr, char input){
     return;
 }
 
-void buf_flush(){ //writes immediate current buffer result
+static char arr[byte_size]; //byte_size = 16
+static int fd2; 
+
+void buf_flush(){ //writes immediate current buffer result if buffer is not empty
+    
     if(position > 0){
-        write(fd2, arr, byte_size);
+        write(fd2, arr, position);
         position = 0;
     }
     return;
 }
 
-void write_of_file(int fd, int fd2, char arr[]){
-    char c;
-    while()
+void example_filled_buffer_output(){
+    //Only writes out each time when each 16 bytes get filled in the arr
+    buf_out(fd2, arr, 'H');
+    buf_out(fd2, arr, 'E');
+    buf_out(fd2, arr, 'L');
+    buf_out(fd2, arr, 'L');
+    buf_out(fd2, arr, 'O');
+    buf_out(fd2, arr, 'H');
+    buf_out(fd2, arr, 'E');
+    buf_out(fd2, arr, 'L');
+    buf_out(fd2, arr, 'L');
+    buf_out(fd2, arr, 'O');
+    buf_out(fd2, arr, 'H');
+    buf_out(fd2, arr, 'E');
+    buf_out(fd2, arr, 'L');
+    buf_out(fd2, arr, 'L');
+    buf_out(fd2, arr, 'O');
+    buf_out(fd2, arr, '6');
+    return;
+}
 
-    printf("\n");
+void example_not_filled_buffer_output(){   
+    //This part doesn't get printed out since buffer is reset and not full
+    buf_out(fd2, arr, 'N');
+    buf_out(fd2, arr, 'O');
+    buf_out(fd2, arr, 'T');
+    buf_out(fd2, arr, 'S');
+    buf_out(fd2, arr, 'E');
+    buf_out(fd2, arr, 'E');
+    buf_out(fd2, arr, 'N');
     return;
 }
 
@@ -94,37 +122,44 @@ void write_of_file(int fd, int fd2, char arr[]){
 
 int main(){
     
-    char arr[byte_size]; //byte_size = 16
+    /*______________________________________TASK 1___________________________________________________*/
     
     //open file with (I/O) system call open()
-    int fd = open("exampletext.txt", O_RDONLY); //file descriptor - read only 
 
+    int fd = open("exampletext.txt", O_RDONLY); //file descriptor - read only 
     if(fd == -1){ //fd returns as -1 upon failure 
         perror("File open failure\n");
         exit(1);
     }
-    //calls buf_in the while loop in function below
-    check_until_eof(fd, arr, fd2);
 
-    //TASK 2
-    int fd2 = open("writeInFile.txt", O_WRONLY | O_CREAT); //file descriptor - read only 
+    printf("Task 1:\n");
+    //calls buf_in the while loop in function below repeatedly
+    check_until_eof(fd, arr);
+
+    /*______________________________TASK 2_______________________________________________________________*/
+    
+    fd2 = open("writeInFile.txt", O_WRONLY | O_CREAT); //file descriptor - write or create only 
     if(fd2 == -1){ //fd returns as -1 upon failure 
         perror("File 2 creation or open failure\n");
         exit(1);
     }
 
-    int fd3 = open("writefromfile.txt", O_RDONLY); 
-    if(fd3 == -1){ //fd returns as -1 upon failure 
-        perror("File open failure\n");
-        exit(1);
-    }
+    //writing out 16 bytes worth of char in file (gives HELLOHELLOHELLO6)
+    example_filled_buffer_output();
 
-    
+    //not filled buffer -> not writing out anything in file -> only stored in buffer
+    example_not_filled_buffer_output();
 
+    //prints out current buffer (above) even though its not filled (in file gives: NOTSEEN)
+    buf_flush(); 
 
 
     //close system call 
     if(close(fd) == -1){
+        perror("Close failed\n");
+        exit(1);
+    }
+    if(close(fd2) == -1){
         perror("Close failed\n");
         exit(1);
     }
