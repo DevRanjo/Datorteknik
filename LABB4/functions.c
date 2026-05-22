@@ -69,6 +69,7 @@ void buf_out(int fd2, char arr[], char input){
     if(position >= byte_size){ //if buffer is full aka 16 bytes or more then write
         write(fd2, arr, byte_size);    
         position = 0; //reset position in arr
+ 
     }
     return;
 }
@@ -118,6 +119,35 @@ void example_not_filled_buffer_output(){
     return;
 }
 
+/*___________________________________________TASK 3__________________________________________________________
+Write a C main program which uses your buffered input/output functions for copying a file.
+The filenames (source and destination) should be provided as the command line arguments
+    • Use the command diff to ensure the copy is the same file as the source one
+    • Use the C timing API to measure the time for reading and the time for writing (and
+    show the average per byte
+    • Compares times you got with your C functions and with a non-buffered version of your
+    function.
+    • Make a comparison with files of different sizes, and use buffer of size 16,32 and 64
+*/
+
+void copy_file(){
+    int source = open("source.txt", O_RDONLY);
+    if(source == -1){
+        perror("Source file open failure\n");
+        exit(1);
+    }
+
+    
+
+    int destination = open("destination.txt", O_WRONLY || O_CREAT);
+    if(destination == -1){
+        perror("Desination file failes to create/open/write\n");
+        exit(1);
+    }
+    return; 
+}
+
+
 
 
 int main(){
@@ -136,6 +166,8 @@ int main(){
     //calls buf_in the while loop in function below repeatedly
     check_until_eof(fd, arr);
 
+
+
     /*______________________________TASK 2_______________________________________________________________*/
     
     fd2 = open("writeInFile.txt", O_WRONLY | O_CREAT); //file descriptor - write or create only 
@@ -152,6 +184,8 @@ int main(){
 
     //prints out current buffer (above) even though its not filled (in file gives: NOTSEEN)
     buf_flush(); 
+
+    /*________________________________TASK 3_____________________________________________________________*/
 
 
     //close system call 
