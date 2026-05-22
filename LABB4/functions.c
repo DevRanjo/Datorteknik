@@ -138,7 +138,7 @@ int main(){
 
     /*______________________________TASK 2_______________________________________________________________*/
     
-    fd2 = open("writeInFile.txt", O_WRONLY | O_CREAT); //file descriptor - write or create only 
+    fd2 = open("writeInFile.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644); //file descriptor - write or create only 
     if(fd2 == -1){ //fd returns as -1 upon failure 
         perror("File 2 creation or open failure\n");
         exit(1);
