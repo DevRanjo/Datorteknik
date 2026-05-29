@@ -402,9 +402,14 @@ int main(){
 
 
     /*______________________________TASK 2_______________________________________________________________*/
+<<<<<<< HEAD
 
     printf("Task 2\n");
     fd2 = open("writeInFile.txt", O_WRONLY | O_CREAT); //file descriptor - write or create only 
+=======
+    
+    fd2 = open("writeInFile.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644); //file descriptor - write or create only 
+>>>>>>> f90642000face3bff181b2d819cb005bf697a1fd
     if(fd2 == -1){ //fd returns as -1 upon failure 
         perror("File 2 creation or open failure\n");
         exit(1);
